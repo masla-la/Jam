@@ -10,6 +10,7 @@ public class player_controller : MonoBehaviour
     Vector3 originalPos;
     Vector2 movement;
     private Rigidbody2D _body;
+    private SpriteRenderer _render;
 
     void Start() 
     {
@@ -21,6 +22,7 @@ public class player_controller : MonoBehaviour
              
              transform.position = originalPos;
         _body = GetComponent<Rigidbody2D>();
+        _render = GetComponent<SpriteRenderer>();
     }
 
     void Update() 
@@ -39,7 +41,17 @@ public class player_controller : MonoBehaviour
             canjump = 0;
             _body.AddForce (Vector2.up * jumpforce, ForceMode2D.Impulse);
         }
-        
+
+        if (Input.GetKeyDown(KeyCode.Space) && _render.color == new Color(1, 1, 1))
+        {
+            _render.color = new Color(0, 0, 0);
+            gameObject.layer = 7;
+        }
+        else if (Input.GetKeyDown(KeyCode.Space) && _render.color == new Color (0, 0, 0))
+        {
+            _render.color = new Color(1, 1, 1);
+            gameObject.layer = 6;
+        }
         if (gameObject.transform.position.y < -24)
         {
             gameObject.transform.position = originalPos;
@@ -52,5 +64,7 @@ public class player_controller : MonoBehaviour
     {
         if (collision.transform.tag == "Floor")
             canjump = 1;
+        else
+            canjump = 0;
     }
 }
